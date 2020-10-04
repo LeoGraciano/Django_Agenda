@@ -1,3 +1,4 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="pt">
 
@@ -17,14 +18,15 @@
       <div class="col-lg-12">
         {% block 'conteudo' %}
         {% endblock  %}
-
+  <!-- Pagination -->        
+      {% include 'parciais/_backnext.html' with page=contatos %}
       </div>
     </div>
   </div>
 
   <!-- Bootstrap core JavaScript -->
-  <script src="vendor/jquery/jquery.slim.min.js"></script>
-  <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+  <script src="{%static 'vendor/jquery/jquery.slim.min.js'%}"></script>
+  <script src="{%static 'vendor/bootstrap/js/bootstrap.bundle.min.js'%}"></script>
 
 </body>
 

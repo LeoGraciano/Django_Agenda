@@ -1,5 +1,5 @@
 
-from django.core.paginator import Paginator
+from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator
 from django.http.response import Http404
 from django.shortcuts import render, get_object_or_404
 from .models import Contato
@@ -8,14 +8,23 @@ from .models import Contato
 
 
 def index(request):
-    contatos = Contato.objects.all()
-    paginator = Paginator(contatos, 2)
+    contato_list = Contato.objects.order_by('nome').filter(
+        mostrar=True
+    )
+    paginator = Paginator(contato_list, 10)
+    page = request.GET.get('page')
 
-    page_number = request.GET.get('p')
-    contatos = paginator.get_page(page_number)
+    try:
+        contatos = paginator.page(page)
+    except PageNotAnInteger:
+        contatos = paginator.page(1)
+
+    except EmptyPage:
+        contatos = paginator.page(paginator.num_pages)
 
     return render(request, 'contatos/index.html', {
-        'contatos': contatos
+        'contatos': contatos,
+        'page': page,
     })
 
 
